@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parking Slots</title>
+  <style>
+    body { background:#f0f0f0; font-family:Arial; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .container { background:white; padding:30px; border-radius:10px; box-shadow:0 0 12px rgba(0,0,0,0.3); text-align:center; width:420px; }
+    h2 { margin-bottom:20px; }
+    .slots { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-top:20px; }
+    .slot { width:70px; height:70px; display:flex; justify-content:center; align-items:center; border-radius:8px; font-weight:bold; cursor:pointer; color:white; }
+    .free { background:#28a745; }   /* Green = Free */
+    .occupied { background:#dc3545; } /* Red = Occupied */
+    button { margin-top:20px; padding:10px 20px; border:none; border-radius:6px; background:#007bff; color:white; cursor:pointer; }
+    button:hover { background:#0056b3; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="title"></h2>
+    <div class="slots">
+      <div class="slot free" onclick="toggleSlot(this)">S1</div>
+      <div class="slot occupied" onclick="toggleSlot(this)">S2</div>
+      <div class="slot free" onclick="toggleSlot(this)">S3</div>
+      <div class="slot occupied" onclick="toggleSlot(this)">S4</div>
+      <div class="slot free" onclick="toggleSlot(this)">S5</div>
+      <div class="slot free" onclick="toggleSlot(this)">S6</div>
+      <div class="slot occupied" onclick="toggleSlot(this)">S7</div>
+      <div class="slot free" onclick="toggleSlot(this)">S8</div>
+    </div>
+    <p id="msg"></p>
+    <button onclick="resetSlots()">Reset All Slots</button>
+  </div>
+
+  <script>
+    const p=new URLSearchParams(window.location.search);
+    document.getElementById("title").innerText=p.get("vehicle")+" - "+p.get("zone")+" Parking Slots";
+
+    function toggleSlot(s){
+      if(s.classList.contains("free")){
+        // Entry → Book slot
+        s.classList.remove("free"); s.classList.add("occupied");
+        document.getElementById("msg").innerText=s.innerText+" booked ✅";
+      } else {
+        // Exit → Free slot
+        s.classList.remove("occupied"); s.classList.add("free");
+        document.getElementById("msg").innerText=s.innerText+" freed 🟢";
+      }
+    }
+
+    function resetSlots(){
+      const slots=document.querySelectorAll(".slot");
+      slots.forEach(s=>{
+        s.classList.remove("occupied");
+        s.classList.add("free");
+      });
+      document.getElementById("msg").innerText="All slots reset to free 🟢";
+    }
+  </script>
+</body>
+</html>
